@@ -1,0 +1,43 @@
+---
+title: "MATH 523, A3, Q1"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+date: "2024-04-06"
+---
+
+**Question 1, part (a)**
+```{r}
+
+library(tidyverse)
+
+celtics_data = read_table("https://users.stat.ufl.edu/~aa/glm/data/Basketball.dat")
+
+celtics_model_1<-glm(made/attempts~1, weights = attempts, data = celtics_data, family = binomial(logit))
+summary(celtics_model)
+
+```
+
+Beta_hat_0 (the intercept of the fitted model) is equal to -0.4633 gives the odds rations for a success (making a shot) when we do e^-0.4633. The standard error is 0.1706 which is the variability of beta_hat_0. It is relatively small compared to the estimated coefficient, therefore we may infer that our beta_hat_0 is decently precise. 
+
+
+**Question 1, part (b)**
+
+Factors that affect the shooter's performance that aren't included in the model may cause overdispersion. One such factor could be injury. Maybe the team has players with recent injuries that affect their ability to successfully shoot a three-pointer. We adjust the standard error for overdispersion by using the quasi-binomial model. 
+
+Confidence interval for model 1: -0.4633 +- 1.960x0.1706 = (-0.798, -0.129)
+
+Confidence interval for model 2: -0.4633 +- 1.960x0.2434 = (-0.940,0.014)
+
+```{r}
+
+library(tidyverse)
+
+celtics_data = read_table("https://users.stat.ufl.edu/~aa/glm/data/Basketball.dat")
+
+celtics_model_2<-glm(made/attempts~1, weights = attempts, data = celtics_data, family = quasi(link = "logit", variance = "mu(1-mu)"))
+summary(celtics_model2)
+
+```
+
